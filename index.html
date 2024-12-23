@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <title>SD Borrowing System</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e6e4ff, #f9f8ff);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white; /* Bagian bawah warna putih */
+            width: 350px;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Supaya elemen anak tidak keluar */
+        }
+
+        .logo-wrapper {
+            background: #A76AE4; /* Warna ungu */
+            padding: 30px;
+            border-radius: 18px 18px 18px 18px; /* Border radius atas */
+            box-shadow: 0 10px 20px rgba(91, 28, 174, 0.3);
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 50%; /* Membuat logo bulat */
+        }
+
+        .logo img {
+            max-width: 120%;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        button {
+            background: white;
+            color: #5B1CAE;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            padding: 15px;
+            width: 50%;
+            margin: 10px auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', Arial, sans-serif;
+            box-shadow: 0 10px 20px rgba(91, 28, 174, 0.3);
+            font-weight: bold;
+        }
+        button:hover {
+            background: #A76AE4;
+            color: white;
+        }
+        .adminButton {
+            background: #f9f8ff;
+            color: #8e7bf0;
+            border-radius: 100px;
+            max-width: 40%;
+        }
+        .adminButton:hover {
+            background: #A76AE4;  
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            border-color: none;
+        }   
+
+        select {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;    
+            border-radius: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-wrapper">
+            <div class="logo">
+                <img src="C:\Users\luwzi\Documents\App Pinjam\assets\logo.png" alt="Logo">
+            </div>
+        </div>
+        <p>Login as</p>
+        <button onclick="showStudentLogin()">Student</button><br>
+        <p>Or</p>
+        <button class="adminButton" onclick="showAdminLogin()">Admin</button>
+    </div>    
+
+    <!-- Student Login Section -->
+    <div class="container" id="student-section" style="display: none;">
+        <div class="logo-wrapper">
+            <div class="logo">
+                <img src="C:\Users\luwzi\Documents\App Pinjam\assets\logo.png" alt="Logo">
+            </div>
+        </div>
+
+        <h2>Student Borrowing</h2>
+        <form id="student-form">
+            <label for="student-name">Your Name:</label><br>
+            <input type="text" id="student-name" name="student-name" required><br>
+
+            <label for="borrow-item">Item to Borrow:</label><br>
+            <select id="borrow-item" name="borrow-item" required>
+                <option value="">-- Select an Item --</option>
+            </select><br>
+
+            <button type="button" onclick="borrowItem()">Borrow</button>
+        </form>
+        <button onclick="goHome()">Back to Home</button>
+    </div>
+
+    <!-- Return Item Section -->
+    <div class="container" id="return-section" style="display: none;">
+        <div class="logo-wrapper">
+            <div class="logo">
+                <img src="C:\Users\luwzi\Documents\App Pinjam\assets\logo.png" alt="Logo">
+            </div>
+        </div>
+        <h2>Return Item</h2>
+        <form id="return-form">
+            <label for="return-name">Your Name:</label><br>
+            <input type="text" id="return-name" name="return-name" required readonly><br>
+
+            <label for="return-item">Item to Return:</label><br>
+            <select id="return-item" name="return-item" required>
+                <option value="">-- Select an Item --</option>
+            </select><br>
+
+            <button type="button" onclick="returnItem()">Return</button>
+        </form>
+    </div>
+
+    <!-- Admin Login Section -->
+    <div class="container" id="admin-section" style="display: none;">
+        <div class="logo-wrapper">
+            <div class="logo">
+                <img src="C:\Users\luwzi\Documents\App Pinjam\assets\logo.png" alt="Logo">
+            </div>
+        </div>
+        <h2>Admin Panel</h2>
+        <form id="admin-form">
+            <label for="manage-item">Item Name:</label><br>
+            <input type="text" id="manage-item" name="manage-item" required><br>
+
+            <label for="item-quantity">Quantity:</label><br>
+            <input type="number" id="item-quantity" name="item-quantity" required><br>
+
+            <button type="button" onclick="addItem()">Add Item</button>
+            <button type="button" onclick="reduceItem()">Reduce Item</button>
+        </form>
+
+        <h3>Borrow History</h3>
+        <ul id="borrow-history"></ul>
+
+        <button onclick="goHome()">Back to Home</button>
+    </div>
+
+    <script>
+        const borrowHistory = [];
+        const itemStock = {
+            Bola: 1,
+            Uno: 1,
+            Raket: 1
+        };
+        let currentBorrow = { name: '', items: [] };
+
+        function showStudentLogin() {
+            document.getElementById('student-section').style.display = 'block';
+            document.getElementById('admin-section').style.display = 'none';
+            document.getElementById('return-section').style.display = 'none';
+            document.querySelector('.container').style.display = 'none';
+            updateBorrowOptions();
+        }
+
+        function showReturnPage() {
+            if (currentBorrow.name && currentBorrow.items.length > 0) {
+                document.getElementById('return-name').value = currentBorrow.name;
+                updateReturnOptions();
+                document.getElementById('student-section').style.display = 'none';
+                document.getElementById('return-section').style.display = 'block';
+                document.getElementById('admin-section').style.display = 'none';
+            } else {
+                alert('No items currently borrowed.');
+            }
+        }
+
+        function showAdminLogin() {
+            document.getElementById('admin-section').style.display = 'block';
+            document.getElementById('student-section').style.display = 'none';
+            document.getElementById('return-section').style.display = 'none';
+            document.querySelector('.container').style.display = 'none';
+        }
+
+        function goHome() {
+            document.getElementById('student-section').style.display = 'none';
+            document.getElementById('admin-section').style.display = 'none';
+            document.getElementById('return-section').style.display = 'none';
+            document.querySelector('.container').style.display = 'block';
+        }
+
+        function borrowItem() {
+            const name = document.getElementById('student-name').value;
+            const item = document.getElementById('borrow-item').value;
+
+            if (name && item) {
+                if (itemStock[item] > 0) {
+                    itemStock[item] -= 1;
+                    borrowHistory.push(`${name} borrowed ${item}`);
+
+                    if (currentBorrow.name !== name) {
+                        currentBorrow = { name, items: [] };
+                    }
+                    currentBorrow.items.push(item);
+
+                    alert(`Thank you, ${name}! You borrowed ${item}.`);
+                    document.getElementById('student-form').reset();
+                    updateBorrowOptions();
+                    showReturnPage();
+                } else {
+                    alert(`Sorry, ${item} is currently unavailable.`);
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function returnItem() {
+            const name = currentBorrow.name;
+            const item = document.getElementById('return-item').value;
+
+            if (name && item) {
+                itemStock[item] += 1;
+                borrowHistory.push(`${name} returned ${item}`);
+                currentBorrow.items = currentBorrow.items.filter(borrowedItem => borrowedItem !== item);
+
+                alert(`Thank you, ${name}! You returned ${item}.`);
+                updateReturnOptions();
+                updateBorrowOptions();
+
+                if (currentBorrow.items.length === 0) {
+                    currentBorrow = { name: '', items: [] };
+                    goHome();
+                }
+            } else {
+                alert('Error: No item to return.');
+            }
+        }
+
+        function addItem() {
+            const item = document.getElementById('manage-item').value;
+            const quantity = parseInt(document.getElementById('item-quantity').value);
+
+            if (item && quantity) {
+                if (!itemStock[item]) {
+                    itemStock[item] = 0;
+                }
+                itemStock[item] += quantity;
+                borrowHistory.push(`Admin added ${quantity} of ${item}`);
+                alert(`Added ${quantity} of ${item}.`);
+                document.getElementById('admin-form').reset();
+                updateBorrowOptions();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function reduceItem() {
+            const item = document.getElementById('manage-item').value;
+            const quantity = parseInt(document.getElementById('item-quantity').value);
+
+            if (item && quantity) {
+                if (itemStock[item] && itemStock[item] >= quantity) {
+                    itemStock[item] -= quantity;
+                    borrowHistory.push(`Admin reduced ${quantity} of ${item}`);
+                    alert(`Reduced ${quantity} of ${item}.`);
+                    document.getElementById('admin-form').reset();
+                    updateBorrowOptions();
+                } else {
+                    alert('Insufficient stock to reduce.');
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function updateBorrowOptions() {
+            const borrowItemSelect = document.getElementById('borrow-item');
+            borrowItemSelect.innerHTML = '<option value="">-- Select an Item --</option>';
+            for (const item in itemStock) {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = `${item} (${itemStock[item]} available)`;
+                option.disabled = itemStock[item] === 0;
+                borrowItemSelect.appendChild(option);
+            }
+        }
+
+        function updateReturnOptions() {
+            const returnItemSelect = document.getElementById('return-item');
+            returnItemSelect.innerHTML = '<option value="">-- Select an Item --</option>';
+            currentBorrow.items.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                returnItemSelect.appendChild(option);
+            });
+        }
+
+        function updateBorrowHistory() {
+            const historyList = document.getElementById('borrow-history');
+            historyList.innerHTML = '';
+            borrowHistory.forEach(entry => {
+                const listItem = document.createElement('li');
+                listItem.textContent = entry;
+                historyList.appendChild(listItem);
+            });
+        }
+
+        setInterval(updateBorrowHistory, 1000);
+        window.onload = updateBorrowOptions;
+    </script>
+    </body>
+</html>
